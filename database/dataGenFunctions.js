@@ -22,11 +22,24 @@ const insertMany = (client, counter) => {
       bool = 0;
       boolean = false;
     }
-    arr.push({ query: quer, params: [parseFloat(Number(Math.random() * 4500).toFixed(2)), parseFloat(Number(Math.random() * 4500).toFixed(2)), parseFloat(Number(Math.random() * 100).toFixed(2)), boolean, randomWarehouse(), parseFloat(Number(Math.random() * 30).toFixed(2)), parseFloat(Number(Math.random() * 4500).toFixed(2)), Math.floor(Math.random() * 3000), faker.commerce.productName()] });
+    arr.push({ query: quer, params: [parseFloat(Number(Math.random() * 4500).toFixed(2)),
+      parseFloat(Number(Math.random() * 4500).toFixed(2)),
+      parseFloat(Number(Math.random() * 100).toFixed(2)), boolean,
+      randomWarehouse(), parseFloat(Number(Math.random() * 30).toFixed(2)),
+      parseFloat(Number(Math.random() * 4500).toFixed(2)), Math.floor(Math.random() * 3000),
+      faker.commerce.productName()]
+    });
     boolean = true;
-    bool+=1;
+    bool += 1;
   }
-  client.batch(arr, { prepare: true }).then(() => {counter += 100; console.log(counter); insertMany(client, counter);}).catch((err) => { console.log(err); });
+  client.batch(arr, { prepare: true })
+    .then(() => {
+      console.log(counter + 100);
+      if (counter + 100 < 10000000) {
+        insertMany(client, counter + 100);
+      }
+    })
+    .catch((err) => { console.log(err); });
 };
 
 const clearDB = (client) => {
@@ -37,14 +50,11 @@ const clearDB = (client) => {
 
 module.exports = { insertMany, clearDB };
 
+// [{name:'texas',latitude:1,longtiude:1},{name:'california',latitude:1,longtiude:1}]
+// INSERT INTO products (id, height, length, price, primeeligible, warehouses, weight, width) VALUES (now(),?,?,?,?,?,?,?)
 
 
-
-// // [{name:'texas',latitude:1,longtiude:1},{name:'california',latitude:1,longtiude:1}]
-// // INSERT INTO products (id, height, length, price, primeeligible, warehouses, weight, width) VALUES (now(),?,?,?,?,?,?,?)
-
-
-// // INSERT INTO products (id, height, length, price, primeeligible, weight, width) VALUES (now(), 1 ,1 ,1, false,1,1);
+// INSERT INTO products (id, height, length, price, primeeligible, weight, width) VALUES (now(), 1 ,1 ,1, false,1,1);
 // var product = [faker.commerce.productName(), parseFloat(Number(Math.random()*100).toFixed(2)), Math.floor(Math.random()*3000), faker.random.boolean(), faker.address.state(), parseFloat(Number(Math.random()*4500).toFixed(2)), parseFloat(Number(Math.random()*4500).toFixed(2)), parseFloat(Number(Math.random()*4500).toFixed(2)), parseFloat(Number(Math.random()*30).toFixed(2)), Math.random()*20 + 30, -1* (Math.random()* 55 + 70)];
 
 

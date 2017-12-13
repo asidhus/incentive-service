@@ -1,5 +1,5 @@
 const cassandra = require('cassandra-driver');
-const helper = require('./helper');
+const helper = require('./dataGenFunctions');
 
 const client = new cassandra.Client({ contactPoints: ['127.0.0.1'], keyspace: 'inventory' });
 
