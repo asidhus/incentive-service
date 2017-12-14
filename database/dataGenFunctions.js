@@ -63,7 +63,7 @@ const insertMany = (client, counter) => {
     .then(() => {
       console.log(counter + 100);
       if (counter + 100 < 10000000) {
-        insertMany(client, counter + 100);
+        setTimeout(insertMany.bind(null, client, counter + 100), 18);
       }
     })
     .catch((err) => { console.log(err); });
