@@ -10,6 +10,6 @@ app.use(parser.urlencoded({ extended: true }));
 
 app.listen(port);
 console.log('server started on port ', port);
-client.generate();
+// client.generate();
 
 //10003200
