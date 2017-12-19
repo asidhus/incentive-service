@@ -91,11 +91,28 @@ const insertMany = (client, counter) => {
 };
 
 const clearDB = (client) => {
-  const query = 'TRUNCATE products';
+  const query = 'TRUNCATE test';
   client.execute(query)
     .then(result => console.log(result)).catch((err) => { console.log(err); });
 };
-module.exports = { insertMany, clearDB };
+
+const search = (client, arr) => {
+  let query = 'SELECT * FROM test WHERE p_id IN ';
+  const len =arr.length;
+  for (let i = 0; i < len; i += 1) {
+    if (i === 0) {
+      query += '('+arr[i]+'';
+    }
+    else if (i === len - 1) {
+      query += ','+arr[i]+')';
+    } else {
+      query += ','+arr[i]+'';
+    }
+  }
+  return client.execute(query);
+};
+
+module.exports = { insertMany, clearDB, search };
 
 // [{name:'texas',latitude:1,longtiude:1},{name:'california',latitude:1,longtiude:1}]
 // INSERT INTO products (id, height, length, price, primeeligible, warehouses, weight, width) VALUES (now(),?,?,?,?,?,?,?)
