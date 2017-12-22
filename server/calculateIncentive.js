@@ -1,8 +1,7 @@
-var geodist = require('geodist');
+const geodist = require('geodist');
 
 
 const calculate = (location, cart, client, response) => {
-
   client.search(cart)
     .then((results) => {
       const { rows } = results;
@@ -16,18 +15,18 @@ const calculate = (location, cart, client, response) => {
           const checkdist = geodist(
             { lat: location.latitude, lon: location.longitude },
             { lat: check.latitude, lon: check.longitude },
-            {exact: true, unit: 'km'},
+            { exact: true, unit: 'km' },
           );
           if (checkdist <= findSmallest || findSmallest === undefined) {
             findSmallest = checkdist;
             val = rows[i];
           }
           if (findSmallest > dist && j === rows[i].warehouses.length - 1) {
-              dist = findSmallest;
-              temp = val;
-            }
+            dist = findSmallest;
+            temp = val;
+          }
         }
-      } //Found the longest distance to a product
+      }
       console.log(dist, temp);
       if (dist > 4000) {
         response.status(200).send({

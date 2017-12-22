@@ -1,4 +1,4 @@
-require('newrelic');
+require('./awsSetup.js');
 const express = require('express');
 const parser = require('body-parser');
 const client = require('../database/index.js');

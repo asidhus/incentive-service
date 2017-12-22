@@ -1,6 +1,6 @@
 const faker = require('faker');
 const _ = require('underscore');
-const elastic = require('../ElasticSearch/indexs');
+// const elastic = require('../ElasticSearch/indexs');
 
 // elastic.deleteIndex()
 //   .then((res) => {
@@ -75,7 +75,7 @@ const insertMany = (client, counter) => {
       faker.commerce.productName()];
 
     arr.push({ query: quer, params: info });
-    elastic.addDocument(info, [y['San Fransico'], y['Miami'], y['Chicago'], y['New York'], y['Austin']], num);
+    // elastic.addDocument(info, [y['San Fransico'], y['Miami'], y['Chicago'], y['New York'], y['Austin']], num);
     boolean = true;
     bool += 1;
   }
@@ -98,15 +98,14 @@ const clearDB = (client) => {
 
 const search = (client, arr) => {
   let query = 'SELECT * FROM test WHERE p_id IN ';
-  const len =arr.length;
+  const len = arr.length;
   for (let i = 0; i < len; i += 1) {
     if (i === 0) {
-      query += '('+arr[i]+'';
-    }
-    else if (i === len - 1) {
-      query += ','+arr[i]+')';
+      query += '(' + arr[i] + '';
+    } else if (i === len - 1) {
+      query += ',' + arr[i] + ')';
     } else {
-      query += ','+arr[i]+'';
+      query += ',' + arr[i] + '';
     }
   }
   return client.execute(query);
@@ -120,6 +119,3 @@ module.exports = { insertMany, clearDB, search };
 
 // INSERT INTO products (id, height, length, price, primeeligible, weight, width) VALUES (now(), 1 ,1 ,1, false,1,1);
 // var product = [faker.commerce.productName(), parseFloat(Number(Math.random()*100).toFixed(2)), Math.floor(Math.random()*3000), faker.random.boolean(), faker.address.state(), parseFloat(Number(Math.random()*4500).toFixed(2)), parseFloat(Number(Math.random()*4500).toFixed(2)), parseFloat(Number(Math.random()*4500).toFixed(2)), parseFloat(Number(Math.random()*30).toFixed(2)), Math.random()*20 + 30, -1* (Math.random()* 55 + 70)];
-
-
-

@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/asidhus/incentive-service#readme",
   "dependencies": {
-    "aws-sdk": "^2.167.0",
+    "aws-sdk": "^2.172.0",
     "body-parser": "^1.18.2",
     "cassandra-driver": "^3.3.0",
     "elasticsearch": "^14.0.0",
