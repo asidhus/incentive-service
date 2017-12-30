@@ -33,6 +33,7 @@
     "nodemon": "^1.12.5",
     "pg": "^7.4.0",
     "request": "^2.83.0",
+    "sqs-consumer": "^3.8.0",
     "underscore": "^1.8.3"
   }
 }
