@@ -108,10 +108,31 @@ const search = (client, arr) => {
       query += ',' + arr[i] + '';
     }
   }
+  if (len === 1) {
+    return client.execute(query + ')');
+  }
   return client.execute(query);
 };
 
-module.exports = { insertMany, clearDB, search };
+const update = (client, arr) => {
+// UPDATE cycling.cyclists
+//   SET firstname = 'Marianne,
+//   lastname = 'VOS'
+//   WHERE id = 88b8fd18-b1ed-4e96-bf79-4280797cba80;
+  let query = 'UPDATE cycling.cyclists';
+  const len = arr.length;
+  for (let i = 0; i < len; i += 1) {
+    if (i === 0) {
+      query += '(' + arr[i] + '';
+    } else if (i === len - 1) {
+      query += ',' + arr[i] + ')';
+    } else {
+      query += ',' + arr[i] + '';
+    }
+  }
+  return client.execute(query);
+};
+module.exports = { insertMany, clearDB, search, update };
 
 // [{name:'texas',latitude:1,longtiude:1},{name:'california',latitude:1,longtiude:1}]
 // INSERT INTO products (id, height, length, price, primeeligible, warehouses, weight, width) VALUES (now(),?,?,?,?,?,?,?)

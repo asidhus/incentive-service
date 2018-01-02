@@ -1,8 +1,11 @@
 const AWS = require('aws-sdk');
+
 AWS.config.loadFromPath('./config/staging.json');
 const Consumer = require('sqs-consumer');
+const client = require('../database/index.js');
+const calculate = require('./calculateIncentive.js');
 
-// const sqs = new AWS.SQS();
+const sqs1 = new AWS.SQS();
 
 
 // const params = {
@@ -38,10 +41,30 @@ const Consumer = require('sqs-consumer');
 //   }
 // });
 
+
+const send = (body, incent) => {
+  const sqsParamsRecommendations = {
+    MessageBody: JSON.stringify({
+      ID: body.ID,
+      incentive: incent,
+    }),
+    QueueUrl: 'https://sqs.us-west-1.amazonaws.com/016977445519/IncentiveCalculated',
+  };
+  console.log('IM here');
+  sqs1.sendMessage(sqsParamsRecommendations, (err) => {
+    if (err) {
+      console.log('Error', err);
+      throw err;
+    }
+  });
+};
+
 const app = Consumer.create({
   queueUrl: 'https://sqs.us-west-1.amazonaws.com/016977445519/IncecntiveProduct',
   handleMessage: (message, done) => {
-    console.log(message);
+    let body = String(message.Body);
+    body = JSON.parse(body);
+    calculate(body.location, body.array, client, send, body);
     done();
   },
   sqs: new AWS.SQS(),
@@ -51,3 +74,5 @@ app.on('error', (err) => {
   console.log(err.message);
 });
 app.start();
+
+//{"ID": 1, "array": [1,2,3], "location": {"latitude": 38.017144, "longitude": -97.743}}

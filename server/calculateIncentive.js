@@ -1,7 +1,7 @@
 const geodist = require('geodist');
 
 
-const calculate = (location, cart, client, response) => {
+const calculate = (location, cart, client, send, body) => {
   client.search(cart)
     .then((results) => {
       const { rows } = results;
@@ -27,27 +27,16 @@ const calculate = (location, cart, client, response) => {
           }
         }
       }
-      console.log(dist, temp);
       if (dist > 4000) {
-        response.status(200).send({
-          incentive: 5,
-        });
+        send(body, 5);
       } else if (dist > 3000) {
-        response.status(200).send({
-          incentive: 4,
-        });
+        send(body, 4);
       } else if (dist > 2000) {
-        response.status(200).send({
-          incentive: 3,
-        });
+        send(body, 3);
       } else if (dist > 1000) {
-        response.status(200).send({
-          incentive: 2,
-        });
+        send(body, 2);
       } else if (dist > 0) {
-        response.status(200).send({
-          incentive: 1,
-        });
+        send(body, 1);
       }
     })
     .catch((results) => { console.log(results); });
