@@ -5,42 +5,9 @@ const Consumer = require('sqs-consumer');
 const client = require('../database/index.js');
 const calculate = require('./calculateIncentive.js');
 
+// client.generate();
+
 const sqs1 = new AWS.SQS();
-
-
-// const params = {
-//   AttributeNames: [
-//     'SentTimestamp',
-//   ],
-//   MaxNumberOfMessages: 1,
-//   MessageAttributeNames: [
-//     'All',
-//   ],
-//   QueueUrl: 'https://sqs.us-west-1.amazonaws.com/016977445519/IncecntiveProduct',
-//   VisibilityTimeout: 0,
-//   WaitTimeSeconds: 0,
-// };
-
-
-// sqs.receiveMessage(params, (err, data) => {
-//   if (err) {
-//     console.log("Receive Error", err);
-//   } else if (data.Messages) {
-//     console.log(data.Messages);
-//     var deleteParams = {
-//       QueueUrl: 'https://sqs.us-west-1.amazonaws.com/016977445519/IncecntiveProduct',
-//       ReceiptHandle: data.Messages[0].ReceiptHandle
-//     };
-//     sqs.deleteMessage(deleteParams, function(err, data) {
-//       if (err) {
-//         console.log("Delete Error", err);
-//       } else {
-//         console.log("Message Deleted", data);
-//       }
-//     });
-//   }
-// });
-
 
 const send = (body, incent) => {
   const sqsParamsRecommendations = {
@@ -75,4 +42,50 @@ app.on('error', (err) => {
 });
 app.start();
 
-//{"ID": 1, "array": [1,2,3], "location": {"latitude": 38.017144, "longitude": -97.743}}
+const change = Consumer.create({
+  queueUrl: 'https://sqs.us-west-1.amazonaws.com/016977445519/ChangeDB',
+  handleMessage: (message, done) => {
+    let body = String(message.Body);
+    body = JSON.parse(body);
+    client.update([body.PID, body.quantity]);
+    done();
+  },
+  sqs: new AWS.SQS(),
+});
+
+change.on('error', (err) => {
+  console.log(err.message);
+});
+change.start();
+
+// const params = {
+//   AttributeNames: [
+//     'SentTimestamp',
+//   ],
+//   MaxNumberOfMessages: 1,
+//   MessageAttributeNames: [
+//     'All',
+//   ],
+//   QueueUrl: 'https://sqs.us-west-1.amazonaws.com/016977445519/IncecntiveProduct',
+//   VisibilityTimeout: 0,
+//   WaitTimeSeconds: 0,
+// };
+// sqs.receiveMessage(params, (err, data) => {
+//   if (err) {
+//     console.log("Receive Error", err);
+//   } else if (data.Messages) {
+//     console.log(data.Messages);
+//     var deleteParams = {
+//       QueueUrl: 'https://sqs.us-west-1.amazonaws.com/016977445519/IncecntiveProduct',
+//       ReceiptHandle: data.Messages[0].ReceiptHandle
+//     };
+//     sqs.deleteMessage(deleteParams, function(err, data) {
+//       if (err) {
+//         console.log("Delete Error", err);
+//       } else {
+//         console.log("Message Deleted", data);
+//       }
+//     });
+//   }
+// });
+

@@ -12,14 +12,8 @@ app.use(parser.urlencoded({ extended: true }));
 app.listen(port);
 
 console.log('server started on port ', port);
-// console.log(JSON.parse('{"ID": 1, "array": [1,2,3], "location": {"latitude": 38.017144, "longitude": -97.743}}'));
-
 // app.post('/calculateIncentive', (request, response) => {
 //   calculate(request.body.location, request.body.cart, client, response);
 // });
-// client.generate();
-// console.log(geodist(
-//             { lat: 38.017144, lon: -122.288581 },
-//             { lat: 30.267, lon: -97.743 },
-//             {exact: true, unit: 'km'},
-//           ), 'HELLO');
+
+// CREATE TABLE Products(id uuid, quantity int, name text, price double, primeEligible boolean, weight double, height double, width double, length double, warehouses list <frozen <warehouses>> , PRIMARY KEY(id));

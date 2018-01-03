@@ -75,7 +75,8 @@ const insertMany = (client, counter) => {
       faker.commerce.productName()];
 
     arr.push({ query: quer, params: info });
-    // elastic.addDocument(info, [y['San Fransico'], y['Miami'], y['Chicago'], y['New York'], y['Austin']], num);
+    // elastic.addDocument(info, [y['San Fransico'],
+    // y['Miami'], y['Chicago'], y['New York'], y['Austin']], num);
     boolean = true;
     bool += 1;
   }
@@ -119,20 +120,12 @@ const update = (client, arr) => {
 //   SET firstname = 'Marianne,
 //   lastname = 'VOS'
 //   WHERE id = 88b8fd18-b1ed-4e96-bf79-4280797cba80;
-  let query = 'UPDATE cycling.cyclists';
-  const len = arr.length;
-  for (let i = 0; i < len; i += 1) {
-    if (i === 0) {
-      query += '(' + arr[i] + '';
-    } else if (i === len - 1) {
-      query += ',' + arr[i] + ')';
-    } else {
-      query += ',' + arr[i] + '';
-    }
-  }
-  return client.execute(query);
+  const query = 'UPDATE test SET quatity = ? WHERE key = ?';
+  return client.execute(query, arr, { prepare: true });
 };
-module.exports = { insertMany, clearDB, search, update };
+module.exports = {
+  insertMany, clearDB, search, update,
+};
 
 // [{name:'texas',latitude:1,longtiude:1},{name:'california',latitude:1,longtiude:1}]
 // INSERT INTO products (id, height, length, price, primeeligible, warehouses, weight, width) VALUES (now(),?,?,?,?,?,?,?)
